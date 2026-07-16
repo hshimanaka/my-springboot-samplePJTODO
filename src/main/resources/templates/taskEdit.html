@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>タスク編集</title>
+    <style>
+        body {
+            font-family: "Helvetica Neue", Arial, sans-serif;
+            margin: 40px auto;
+            max-width: 900px; /* 画面が広がりすぎないように最大幅を制限 */
+            padding: 0 20px;
+            background-color: #ffffff;
+            color: #212529;
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 24px;
+        }
+
+        /* フォームの各入力グループの間隔 */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        /* 項目名（ラベル）のスタイル */
+        label {
+            display: block;
+            font-size: 16px;
+            margin-bottom: 8px;
+            color: #212529;
+        }
+
+        /* 1行入力、日付入力、テキストエリアの共通基本スタイル */
+        input[type="text"],
+        input[type="date"],
+        textarea {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            box-sizing: border-box;
+            outline: none;
+            color: #212529;
+            background-color: #ffffff;
+            transition: border-color 0.15s ease-in-out;
+        }
+
+        /* テキストエリア（内容）専用のスタイル */
+        textarea {
+            resize: vertical; /* 縦方向のみリサイズ可能にする */
+            min-height: 80px;
+        }
+
+        /* 入力欄にフォーカス（クリック）したときの青枠アニメーション */
+        input[type="text"]:focus,
+        input[type="date"]:focus,
+        textarea:focus {
+            border-color: #86b7fe;
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+        }
+
+        /* ボタンを横並びにするエリア */
+        .button-group {
+            display: flex;
+            gap: 10px; /* ボタン同士のすき間 */
+            margin-top: 30px;
+        }
+
+        /* ボタンの共通スタイル */
+        .btn {
+            font-size: 16px;
+            padding: 10px 20px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: opacity 0.2s;
+            text-decoration: none; /* aタグの場合に下線を消す */
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        /* 青色の更新ボタン */
+        .btn-primary {
+            background-color: #0d6efd;
+            color: #ffffff;
+        }
+
+        /* グレーのキャンセルボタン */
+        .btn-secondary {
+            background-color: #6c757d;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>タスク編集</h1>
+
+    <form th:action="@{/tasks/update(id=${task.id})}" method="POST">
+        <!-- タイトル -->
+        <div class="form-group">
+            <label for="title">タイトル</label>
+            <input type="text" id="title" name="title" th:value="${task.title}">
+        </div>
+
+        <!-- 内容 -->
+        <div class="form-group">
+            <label for="content">内容</label>
+            <textarea id="content" name="content" th:text="${task.content}"></textarea>
+        </div>
+
+        <!-- 登録者 -->
+        <div class="form-group">
+            <label for="username">登録者</label>
+            <input type="text" id="username" name="username" th:value="${task.username}">
+        </div>
+
+        <!-- 開始日 -->
+        <div class="form-group">
+            <label for="startDate">開始日</label>
+            <input type="date" id="startDate" name="startDate" th:value="${task.start_date}">
+        </div>
+
+        <!-- 終了日 -->
+        <div class="form-group">
+            <label for="endDate">終了日</label>
+            <input type="date" id="endDate" name="endDate" th:value="${task.end_date}">
+        </div>
+
+        <!-- ボタンエリア -->
+        <div class="button-group">
+            <button type="submit" class="btn btn-primary">更新</button>
+			<a href="/tasks" class="btn btn-secondary">← キャンセル</a>
+        </div>
+    </form>
+
+</body>
+</html>

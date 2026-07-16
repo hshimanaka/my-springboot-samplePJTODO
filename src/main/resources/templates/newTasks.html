@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>タスク編集</title>
+    <style>
+        body {
+            font-family: "Helvetica Neue", Arial, sans-serif;
+            margin: 40px auto;
+            max-width: 900px;
+            padding: 0 20px;
+            background-color: #ffffff;
+            color: #212529;
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 16px;
+            margin-bottom: 8px;
+            color: #212529;
+        }
+
+        input[type="text"],
+        input[type="date"],
+        textarea {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            box-sizing: border-box;
+            outline: none;
+            color: #212529;
+            background-color: #ffffff;
+            transition: border-color 0.15s ease-in-out;
+        }
+
+        textarea {
+            resize: vertical; /* 縦方向のみリサイズ可能にする */
+            min-height: 80px;
+        }
+
+        input[type="text"]:focus,
+        input[type="date"]:focus,
+        textarea:focus {
+            border-color: #86b7fe;
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px; 
+            margin-top: 30px;
+        }
+
+        .btn {
+            font-size: 16px;
+            padding: 10px 20px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: opacity 0.2s;
+            text-decoration: none; /* aタグの場合に下線を消す */
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .btn-primary {
+            background-color: #0d6efd;
+            color: white;
+        }
+
+        .btn-secondary {
+            background-color: gray;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>タスク登録</h1>
+
+    <form th:action="@{/tasks}" method="POST">
+        <!-- タイトル -->
+        <div class="form-group">
+            <label for="title">タイトル</label>
+            <input type="text" id="title" name="title" value="買い物リスト作成">
+        </div>
+
+        <!-- 内容 -->
+        <div class="form-group">
+            <label for="content">内容</label>
+            <textarea id="content" name="content" >週末の買い物リストを作成</textarea>
+        </div>
+
+        <!-- 登録者 -->
+        <div class="form-group">
+            <label for="username">登録者</label>
+            <input type="text" id="username" name="username" value="田中 太郎">
+        </div>
+
+        <!-- 開始日 -->
+        <div class="form-group">
+            <label for="Start_date">開始日</label>
+            <input type="date" id="Start_date" name="startDate">
+        </div>
+
+        <!-- 終了日 -->
+        <div class="form-group">
+            <label for="End_date">終了日</label>
+            <input type="date" id="End_date" name="endDate">
+        </div>
+
+        <!-- ボタンエリア -->
+        <div class="button-group">
+            <button type="submit" class="btn btn-primary">保存</button>
+        </div>
+    </form>
+
+</body>
+</html>

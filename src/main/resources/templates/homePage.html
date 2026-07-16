@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<metacharset"UTF-8">
+		<title>TODO</title>
+		<style>
+			body {
+				margin: 0;
+				padding: 0;
+				height: 100vh;
+				display: flex;
+				justify-content: center;
+				font-family: "Helvetica Neue", Alial, sans-serif;
+				background-color: #ffffff;
+			}
+			.container {
+				text-align: center;
+			}
+			h1 {
+				font-size: 36px;
+				color: #212529;
+				margin-bottom: 24px;
+			}
+			.btn {
+				display: inline-block;
+				padding: 10px 20px;
+				font-size: 16px;
+				font-weight: bold;
+				text-decoration: none;
+				border-radius: 6px;
+				margin: 0 8px;
+				transition: opacity 0.2s;
+			}
+			.btn:hover {
+				opacity: 0.8;
+			}
+			.btn-register {
+				background-color: #198754;
+				color: #ffffff;
+			}
+			.btn-login {
+				background-color: #0d6efd;
+				color: #ffffff;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<h1>TODOアプリ TOP</h1>
+			<a th:href="@{/register}" class="btn btn-register">ユーザー登録</ath:href>
+			<a th:href="@{/login}" class="btn btn-login">ログイン</a>
+		</div>
+	</body>
+</html>
