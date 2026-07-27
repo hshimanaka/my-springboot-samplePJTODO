@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 	<head>
-		<metacharset"=UTF-8">
+		<meta charset"=UTF-8">
 		<title>タスク一覧</title>
 	</head>
 	<style>
@@ -25,7 +25,7 @@
 			color: white;
 			background-color: blue;
 		}
-		.btn-delet {
+		.btn-delete {
 			color: white;
 			background-color: red;
 				}
@@ -67,13 +67,16 @@
 			<td th:text="${rec.title}"></td>
 			<td th:text="${rec.content}"></td>
 			<td th:text="${rec.username}"></td>
-			<td th:text="${rec.start_date}"></td>
-			<td th:text="${rec.end_date}"></td>
-			<td th:text="${rec.created_at}"></td>
-			<td th:text="${rec.updated_at}"></td>
+			<td th:text="${rec.startDate}"></td>
+			<td th:text="${rec.endDate}"></td>
+			<td th:text="${rec.createdAt}"></td>
+			<td th:text="${rec.updatedAt}"></td>
 			<td>
 				<a th:href="@{/tasks/edit(id=${rec.id})}" class="btn-edit">編集</a>
-				<a th:href="@{/tasks/delete(id=${rec.id})}" class="btn-delet">削除</a>
+				<form th:action="@{/tasks/delete}" method="POST" style="display: inLine">
+					<input type="hidden" name="id" th:value="${rec.id}">
+					<button type="submit" class="btn-delete">削除</button>
+				</form>
 			</td>
 		</tr>
 		</table>

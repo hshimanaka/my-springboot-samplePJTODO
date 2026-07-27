@@ -1,9 +1,34 @@
 package com.example.demo;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface LoginRepository extends JpaRepository<loginprocess, Integer> {
-	loginprocess findByUsername(String username);
+public class LoginRepository {
+	private final LoginMapper loginMapper;
+	public LoginRepository(LoginMapper loginMapper) {
+		this.loginMapper = loginMapper;
+	}
+	//usernameとpasswordでの検索
+	public List<User> findByPasswordAndUsername(String password, String username) {
+		return loginMapper.findByPasswordAndUsername(password, username);
+	}
+	//usernameでの検索
+	public Optional<User> findByUsername(String username) {
+		return loginMapper.findByUsername(username);
+	}
+	//保存
+	public void save(User user) {
+		if(user.getId() == null) {
+			loginMapper.insert(user);
+		} else {
+			loginMapper.update(user);
+		}
+	}
+	//削除
+	public void delete(String username) {
+		loginMapper.delete(username);
+	}
 }

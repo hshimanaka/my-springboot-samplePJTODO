@@ -2,6 +2,7 @@ package com.example.demo;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -10,12 +11,30 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 public class HomePageController {
-	@Autowired
-	private LoginRepository loginRepository;
-	@Autowired
-	private TaskRepository taskRepository;
+	private final TaskService taskService;
+	private final LoginService loginService;
+	private final HttpSession session;
+	
+	public HomePageController(
+			TaskService taskService,
+			LoginService loginService,
+			HttpSession session) {
+		this.taskService = taskService;
+		this.loginService = loginService;
+		this.session = session;
+	}
+	
+	private String getLoginUsername() {
+		String username = (String) session.getAttribute("username");
+		if(username == null) {
+			throw new IllegalStateException("ログインしていません");
+		}
+		return username;
+	}
 	
 	@GetMapping("/")
 	public String homePage() {
@@ -34,13 +53,14 @@ public class HomePageController {
 	
 	@PostMapping("/login") 
 	public String loginCheck(
-	    @RequestParam("username") String formUsername,
-	    @RequestParam("password") String formPassword
+	    @RequestParam("password") String password,
+	    @RequestParam("username") String username
 	    ) {
-	  loginprocess dbUser = loginRepository.findByUsername(formUsername); 
-		if (dbUser != null && dbUser.getPassword().equals(formPassword)) {
-			return "tasks";
-		} else {
+		try {
+			User user = loginService.loginCheck(password, username);
+			session.setAttribute("username", user.getUsername());
+			return "redirect:/tasks";
+		} catch(LoginNotFoundException e) {
 			return "login";
 		}
 	}
@@ -49,86 +69,73 @@ public class HomePageController {
 		return "newTasks";
 	}
 	
-	@PostMapping("/tasks")
-	public ModelAndView createTask(
-			@RequestParam("title") String title,
-			@RequestParam("content") String content,
-			@RequestParam("username") String username,
-			@RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start_date,
-			@RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate end_date,
-			ModelAndView model
-			) {
-		Task task = new Task();
-		task.setTitle(title);
-		task.setContent(content);
-		task.setUsername(username);
-		task.setStart_date(start_date);
-		task.setEnd_date(end_date);
-		taskRepository.save(task);
-		List <Task> taskList = taskRepository.findAll();
-		model.addObject("tasks", taskList);
-		model.setViewName("tasks");
-		return model;
-	}
-	@GetMapping("/tasks/delete")
-	public ModelAndView deletId(@RequestParam("id") Long id, ModelAndView mv) {
-		taskRepository.deleteById(id);
-		List<Task> taskList = taskRepository.findAll();
+	@GetMapping("/tasks")
+	public ModelAndView showTasks(ModelAndView mv) {
+		String username = getLoginUsername();
+		List<Task> taskList = taskService.findByUsername(username);
 		mv.addObject("tasks", taskList);
 		mv.setViewName("tasks");
 		return mv;
+	}
+	@PostMapping("/tasks")
+	public String createTask(Task task) {
+		String username = (String) session.getAttribute("username");
+		task.setUsername(username);
+		taskService.create(task);
+		return "redirect:/tasks";
+	}
+
+	
+	@PostMapping("/tasks/delete")
+	public String delete(@RequestParam("id") Long id) {
+		String username = getLoginUsername();
+		taskService.delete(id, username);
+		return "redirect:/tasks";
 	}
 	
 	@GetMapping("/tasks/edit")
 	public ModelAndView taskEdit(@RequestParam("id") Long id, ModelAndView mv) {
-		Task targetTask = taskRepository.findById(id).get();
-		List<Task> taskList = taskRepository.findAll();
-		mv.addObject("task", targetTask);
-		mv.setViewName("taskEdit");
-		return mv;
+	    String username = getLoginUsername();
+	    Task targetTask = taskService.findByIdAndUsername(id, username);
+	    mv.addObject("task", targetTask);
+	    mv.setViewName("taskEdit");
+	    return mv;
 	}
 	@PostMapping("/tasks/update")
-	public ModelAndView upDateTask(
-			@RequestParam("id") Long id,
-			@RequestParam("title") String title,
-			@RequestParam("content") String content,
-			@RequestParam("username") String username,
-			@RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start_date,
-			@RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate end_date,
-			ModelAndView mv
-			){
-		Task task = new Task();
-		task.setId(id);
-		task.setTitle(title);
-		task.setContent(content);
-		task.setUsername(username);
-		task.setStart_date(start_date);
-		task.setEnd_date(end_date);
-		taskRepository.save(task);
-		List <Task> taskList = taskRepository.findAll();
-		mv.addObject("tasks", taskList);
-		mv.setViewName("tasks");
-		return mv;
+	public ModelAndView updateTask(
+	        @RequestParam("id") Long id,
+	        @RequestParam("title") String title,
+	        @RequestParam("content") String content,
+	        @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+	        @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+	        ModelAndView mv
+	        ){
+	    String username = getLoginUsername();
+	    Task task = new Task();
+	    task.setId(id);
+	    task.setTitle(title);
+	    task.setContent(content);
+	    task.setUsername(username);
+	    task.setStartDate(startDate);
+	    task.setEndDate(endDate);
+	    taskService.update(task);
+	    List<Task> taskList = taskService.findByUsername(username); 
+	    mv.addObject("tasks", taskList);
+	    mv.setViewName("tasks");
+	    return mv;
 	}
-	@GetMapping("/tasks")
-	public ModelAndView showtasks(ModelAndView mv) {
-		List<Task> taskList = taskRepository.findAll();
-		mv.addObject("tasks", taskList);
-		mv.setViewName("tasks");
-		return mv;
-	}
+
+	
 	@PostMapping("/register")
 	public String registerUser(
 			@RequestParam("username") String formusername,
 			@RequestParam("password") String formpassword) {
-		loginprocess newUser = new loginprocess();
-		newUser.setUsername(formusername);
-		newUser.setPassword(formpassword);
-		loginRepository.save(newUser);
+		loginService.register(formusername, formpassword);
 		return "redirect:/login";
 	}
 	@GetMapping("/logout")
-	public String lorout() {
-		return "login";
+	public String logout() {
+		session.invalidate();
+		return "redirect:/login";
 	}
 }

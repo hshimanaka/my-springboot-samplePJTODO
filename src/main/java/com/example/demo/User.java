@@ -1,15 +1,11 @@
 package com.example.demo;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public class Task {
+public class User {
 	private Long id;
 	private String username;
-	private String title;
-	private String content;
-	private LocalDate startDate;
-	private LocalDate endDate;
+	private String password;
 	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;
 	public Long getId() {
@@ -24,30 +20,11 @@ public class Task {
 	public void setUsername(String username) {
 		this.username = username;
 	}
-	public String getTitle() {
-		return title;
+	public String getPassword() {
+		return password;
 	}
-	public void setTitle(String title) {
-		this.title = title;
-	}
-	public String getContent() {
-		return content;
-	}
-	public void setContent(String content) {
-		this.content = content;
-	}
-
-	public LocalDate getStartDate() {
-		return startDate;
-	}
-	public void setStartDate(LocalDate startDate) {
-		this.startDate = startDate;
-	}
-	public LocalDate getEndDate() {
-		return endDate;
-	}
-	public void setEndDate(LocalDate endDate) {
-		this.endDate = endDate;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 	public LocalDateTime getCreatedAt() {
 		return createdAt;
@@ -61,5 +38,5 @@ public class Task {
 	public void setUpdatedAt(LocalDateTime updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
+	
 }

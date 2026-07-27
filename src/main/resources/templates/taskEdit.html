@@ -118,22 +118,18 @@
             <textarea id="content" name="content" th:text="${task.content}"></textarea>
         </div>
 
-        <!-- 登録者 -->
-        <div class="form-group">
-            <label for="username">登録者</label>
-            <input type="text" id="username" name="username" th:value="${task.username}">
         </div>
 
         <!-- 開始日 -->
         <div class="form-group">
             <label for="startDate">開始日</label>
-            <input type="date" id="startDate" name="startDate" th:value="${task.start_date}">
+            <input type="date" id="startDate" name="startDate" th:value="${task.startDate}">
         </div>
 
         <!-- 終了日 -->
         <div class="form-group">
             <label for="endDate">終了日</label>
-            <input type="date" id="endDate" name="endDate" th:value="${task.end_date}">
+            <input type="date" id="endDate" name="endDate" th:value="${task.endDate}">
         </div>
 
         <!-- ボタンエリア -->

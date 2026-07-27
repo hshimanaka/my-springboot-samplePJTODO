@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.TaskMapper">
+    <resultMap id="taskMap" type="com.example.demo.Task">
+        <id property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="title" column="title"/>
+        <result property="content" column="content"/>
+        <result property="startDate" column="start_date"/>
+        <result property="endDate" column="end_date"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+    </resultMap>
+
+    <select id="findByUsername" resultMap="taskMap">
+        SELECT * FROM tasks WHERE username = #{username} ORDER BY id
+    </select>
+    
+    <select id="findByIdAndUsername" resultMap="taskMap">
+    	SELECT * FROM tasks WHERE id = #{id} AND username = #{username}
+    </select>
+
+    <insert id="insert">
+        INSERT INTO tasks (username, title, content, start_date, end_date, created_at, updated_at)
+        VALUES (#{username}, #{title}, #{content}, #{startDate}, #{endDate}, now(), now())
+    </insert>
+
+    <update id="update">
+        UPDATE tasks
+        SET title = #{title},
+            content = #{content},
+            start_date = #{startDate},
+            end_date = #{endDate},
+            updated_at = now()
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete">
+        DELETE FROM tasks
+        WHERE id = #{id} AND username = #{username}
+    </delete>
+</mapper>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.LoginMapper">
+<resultMap id="loginMap" type="com.example.demo.User">
+<id property="id" column="id"/>
+<result property="username" column="username"/>
+<result property="password" column="password"/>
+<result property="createdAt" column="created_at"/>
+<result property="updatedAt" column="updated_at"/>
+</resultMap>
+<select id="findByPasswordAndUsername" resultMap="loginMap">
+SELECT * FROM login WHERE username = #{username} AND password = #{password}
+</select>
+<select id="findByUsername" resultMap="loginMap">
+    SELECT * FROM login WHERE username = #{username}
+</select>
+<insert id="insert">
+INSERT INTO login (username, password, created_at, updated_at)
+VALUES (#{username}, #{password}, now(), now())
+</insert>
+<update id="update">
+UPDATE login
+SET username = #{username},
+password = #{password},
+updated_at = now()
+WHERE id = #{id} AND username = #{username}
+</update>
+<delete id="delete">
+DELETE FROM login
+WHERE username = #{username}
+</delete>
+</mapper>
