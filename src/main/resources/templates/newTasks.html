@@ -96,28 +96,30 @@
 
     <h1>タスク登録</h1>
 
-    <form th:action="@{/tasks}" method="POST">
+    <form th:action="@{/tasks}" th:object="${taskForm}" method="POST">
         <!-- タイトル -->
         <div class="form-group">
-            <label for="title">タイトル</label>
-            <input type="text" id="title" name="title">
+			<label for="title">タイトル</label>
+            <input type="text" th:field="*{title}">
+			<span th:if="${#fields.hasErrors('title')}" th:errors="*{title}" style="color:red;"></span>
         </div>
 
         <!-- 内容 -->
         <div class="form-group">
             <label for="content">内容</label>
-            <textarea id="content" name="content"></textarea>
+            <textarea th:field="*{content}"></textarea>
         </div>
         <!-- 開始日 -->
         <div class="form-group">
             <label for="Start_date">開始日</label>
-            <input type="date" id="Start_date" name="startDate">
+            <input type="date" th:field="*{startDate}">
+			<span th:if="${#fields.hasErrors('startDate')}" th:errors="*{startDate}" style="color:red"></span>
         </div>
 
         <!-- 終了日 -->
         <div class="form-group">
             <label for="End_date">終了日</label>
-            <input type="date" id="End_date" name="endDate">
+            <input type="date" th:field="*{endDate}">
         </div>
 
         <!-- ボタンエリア -->

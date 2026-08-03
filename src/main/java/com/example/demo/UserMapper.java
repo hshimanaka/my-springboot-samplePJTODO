@@ -6,8 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 @Mapper
-public interface LoginMapper {
-	List<User> findByPasswordAndUsername(@Param("password") String password, @Param("username") String username);
+public interface UserMapper {
 	Optional<User> findByUsername(@Param("username") String username);
 	void insert(User login);
 	void update(User login);

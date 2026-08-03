@@ -26,19 +26,33 @@ public class TaskService {
 	
 	@Transactional
 	public void create(Task task) {
+		task.setId(null);
 		taskRepository.save(task);
 	}
 	
 	@Transactional
 	public void update(Task task) {
-		taskRepository.save(task);
+		taskRepository.findByIdAndUsername(task.getId(), task.getUsername())
+		.orElseThrow(() -> new TaskNotFoundException(task.getId()));
+		taskRepository.update(task);
 	}
 	
 	@Transactional
 	public void delete(Long id, String username) {
-		Task task = taskRepository.findByIdAndUsername(id, username)
+		taskRepository.findByIdAndUsername(id, username)
 				.orElseThrow(() -> new TaskNotFoundException(id));
 		taskRepository.delete(id, username);
 	}
 	
+	@Transactional(readOnly = true)
+	public List<Task> findByUsername(String username, int page, int size) {
+		int limit = Math.min(Math.max(size,  1), 100);
+		int offset = Math.max(page, 0) * limit;
+		return taskRepository.findByUsernamePaged(username, limit, offset);
+	}
+	
+	@Transactional(readOnly = true)
+	public int countByUsername(String username) {
+	    return taskRepository.countByUsername(username);
+	}
 }

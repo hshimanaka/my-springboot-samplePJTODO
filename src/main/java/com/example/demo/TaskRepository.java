@@ -15,7 +15,9 @@ public class TaskRepository{
 	public List<Task> findByUsername(String username) {
 		return taskMapper.findByUsername(username);
 	}
-
+	public List<Task> findByUsernamePaged(String username, int page, int size) {
+		return taskMapper.findByUsernamePaged(username, page, size);
+	}
 	//保存
 	public void save(Task task) {
 		if(task.getId() == null) {
@@ -32,4 +34,14 @@ public class TaskRepository{
 	public void delete(Long id, String username) {
 		taskMapper.delete(id, username);
 	}
+	public void update(Task task) {
+		taskMapper.update(task);
+	}
+	public int countByUsername(String username) {
+        return taskMapper.countByUsername(username);
+    }
+	
+	
+	
+
 }

@@ -6,15 +6,12 @@ import java.util.Optional;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class LoginRepository {
-	private final LoginMapper loginMapper;
-	public LoginRepository(LoginMapper loginMapper) {
+public class UserRepository {
+	private final UserMapper loginMapper;
+	public UserRepository(UserMapper loginMapper) {
 		this.loginMapper = loginMapper;
 	}
-	//usernameとpasswordでの検索
-	public List<User> findByPasswordAndUsername(String password, String username) {
-		return loginMapper.findByPasswordAndUsername(password, username);
-	}
+	
 	//usernameでの検索
 	public Optional<User> findByUsername(String username) {
 		return loginMapper.findByUsername(username);

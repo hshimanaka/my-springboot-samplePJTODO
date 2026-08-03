@@ -20,6 +20,7 @@ public class LoginSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+        .logout(logout -> logout.disable())
             .authorizeHttpRequests(auth -> auth
                 .anyRequest().permitAll()
             )
