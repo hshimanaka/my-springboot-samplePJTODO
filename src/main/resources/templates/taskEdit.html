@@ -105,29 +105,35 @@
 
     <h1>タスク編集</h1>
 
-    <form th:action="@{/tasks/update(id=${task.id})}" method="POST">
+    <form th:action="@{/tasks/update}" th:Object="${taskForm}" method="POST">
+		<input type="hidden" name="${id}">
         <!-- タイトル -->
         <div class="form-group">
             <label for="title">タイトル</label>
-            <input type="text" id="title" name="title" th:value="${task.title}">
+            <input type="text" th:field="*{title}">
+			<span th:errors="*{title}" style="color:red;"></span>
         </div>
-
+		
         <!-- 内容 -->
         <div class="form-group">
             <label for="content">内容</label>
-            <textarea id="content" name="content" th:text="${task.content}"></textarea>
+            <textarea th:field="*{content}"></textarea>
+			<span th:errors="*{content}" style="color:red;"></span>
         </div>
 
         <!-- 開始日 -->
         <div class="form-group">
             <label for="startDate">開始日</label>
-            <input type="date" id="startDate" name="startDate" th:value="${task.startDate}">
+            <input type="date"th:field="*{startDate}">
+			<span th:errors="*{startDate}" style="color:red;"></span>
         </div>
+		
 
         <!-- 終了日 -->
         <div class="form-group">
             <label for="endDate">終了日</label>
-            <input type="date" id="endDate" name="endDate" th:value="${task.endDate}">
+			<input type="date"th:field="*{endDate}">
+			<span th:errors="*{endDate}" style="color:red;"></span>
         </div>
 
         <!-- ボタンエリア -->

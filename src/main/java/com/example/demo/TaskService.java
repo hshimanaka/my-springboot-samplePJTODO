@@ -55,4 +55,19 @@ public class TaskService {
 	public int countByUsername(String username) {
 	    return taskRepository.countByUsername(username);
 	}
+	
+	@Transactional(readOnly = true)
+	public TaskPage findPage(String username, int requestedPage, int requestedSize) {
+		int size = Math.min(Math.max(requestedSize, 1), 100);
+		int total = taskRepository.countByUsername(username);
+		int totalPages = (total == 0) ? 1 : (int) Math.ceil((double) total / size);
+		
+		int page = Math.min(Math.max(requestedPage, 0), totalPages - 1);
+		int offset = page * size;
+		boolean hasPrev = page > 0;
+		boolean hasNext = (page + 1) < totalPages;
+		
+		List<Task> tasks = taskRepository.findByUsernamePaged(username, size, offset);
+		return new TaskPage(tasks, page, size, totalPages, hasPrev, hasNext);
+	}
 }

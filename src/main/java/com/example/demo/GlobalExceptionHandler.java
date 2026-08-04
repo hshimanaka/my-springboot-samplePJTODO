@@ -13,11 +13,13 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(TaskNotFoundException.class)
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	public ModelAndView handleTaskNotFound(TaskNotFoundException e) {
-		ModelAndView mv = new ModelAndView();
+		log.warn("タスクが見つかりません: {}", e.getMessage());
+		ModelAndView mv = new ModelAndView("404");
 		mv.addObject("message", e.getMessage());
-		mv.setViewName("404");
 		return mv;
 	}
+	
+
 	private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 	@ExceptionHandler(Exception.class)
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -28,9 +30,10 @@ public class GlobalExceptionHandler {
 			return mv;
 	}
 	
-	@ExceptionHandler(IllegalStateException.class)
-	public String handkeNotLoggedId(IllegalStateException e) {
-		log.info("未ログイクインアクセス： {})", e.getMessage());
+	@ExceptionHandler(NotLoggedInException.class)
+	public String handleNotLoggedId(NotLoggedInException e) {
+		log.info("未ログインアクセス： {}", e.getMessage());
 		return "redirect:/login";
 	}
+	
 }

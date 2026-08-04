@@ -3,7 +3,6 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>タスク一覧</title>
-	</head>
 	<style>
 		h1 {
 			text-align: center;
@@ -44,18 +43,19 @@
 			margin-bottom: 20px;
 		}
 	</style>
-	<body>
-		<th:block class="container">
+	</head>
+	<divbody>
+		<div class="container">
 		<h1>タスク管理</h1>
 		<div class="logout">
 			<form th:action="@{/logout}" method="POST" style="display:inline;">
-				<button type="submit" classs="btn-logout">ログアウト</button>
+				<button type="submit" class="btn-logout">ログアウト</button>
 			</form>
 		</div>
-		<div th:if="${tasks == null or #lists.isEmpty(tasks)}" class="notask">
+		<div th:if="${taskPage.tasks == null or #lists.isEmpty(taskPage.tasks)}" class="notask">
 			<p>現在タスクは登録されていません。「新規作成」から追加してください。</p>
 		</div>
-		<th:block th:unless="${tasks == null or #lists.isEmpty(tasks)}">
+		<th:block th:unless="${taskPage.tasks == null or #lists.isEmpty(taskPage.tasks)}">
 		<table border="1" style="border-collapse: collapse; width: 100%; margin: 0 auto;">
 		<tr>
 		 <th>id</th>
@@ -68,7 +68,7 @@
 		 <th>更新日時</th>
 		 <th>操作</th>
 		</tr>
-		<tr th:each="rec:${tasks}">
+		<tr th:each="rec:${taskPage.tasks}">
 			<td th:text="${rec.id}"></td>
 			<td th:text="${rec.title}"></td>
 			<td th:text="${rec.content}"></td>
@@ -79,7 +79,8 @@
 			<td th:text="${rec.updatedAt}"></td>
 			<td>
 				<a th:href="@{/tasks/edit(id=${rec.id})}" class="btn-edit">編集</a>
-				<form th:action="@{/tasks/delete}" method="POST" style="display: inLine">
+				<form th:action="@{'/tasks/' + ${rec.id} + '/delete'}" method="POST" 
+				onsubmit="return confirm('削除しますか？');" style="display: inline">
 					<input type="hidden" name="id" th:value="${rec.id}">
 					<button type="submit" class="btn-delete">削除</button>
 				</form>
@@ -93,17 +94,19 @@
 			<button type="button">+ 新規作成</button>
 		</a> 
 		</div>
-		<div class="pagination">
-			<a th:if="${page > 0}"
-				th:href="@{/tasks(page=${i})}">前へ</a>
+		<div class="pagination" th:if="${taskPage.totalPages > 1}">
+			<a th:if="${taskPage.hasPrev}"
+				th:href="@{/tasks(page=${taskPage.page - 1}, size=${taskPage.size})}">前へ</a>
 				
-				<span th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
-					<a th:href="@{/tasks(page=${i})}"
+				<span th:each="i : ${#numbers.sequence(0, taskPage.totalPages - 1)}">
+					<a th:href="@{/tasks(page=${i}, size=${taskPage.size})}"
 					th:text="${i + 1}"
-					th:style="${i == page} ? 'font-weight:bold;' : ''"></a>
+					th:style="${i == taskPage.page} ? 'font-weight:bold;' : ''"></a>
 				</span>
 				
-				<a th:if="${page < totalPages -1}">次へ</a>
+				<a th:if="${taskPage.hasNext}"
+				th:href="@{/tasks(page=${taskPage.page + 1}, size=${taskPage.size})}">次へ</a>
+		</div>
 		</div>
 	</body>
 </html>

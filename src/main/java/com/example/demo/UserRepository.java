@@ -7,25 +7,25 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class UserRepository {
-	private final UserMapper loginMapper;
-	public UserRepository(UserMapper loginMapper) {
-		this.loginMapper = loginMapper;
+	private final UserMapper userMapper;
+	public UserRepository(UserMapper userMapper) {
+		this.userMapper = userMapper;
 	}
 	
 	//usernameでの検索
 	public Optional<User> findByUsername(String username) {
-		return loginMapper.findByUsername(username);
+		return userMapper.findByUsername(username);
 	}
 	//保存
 	public void save(User user) {
 		if(user.getId() == null) {
-			loginMapper.insert(user);
+			userMapper.insert(user);
 		} else {
-			loginMapper.update(user);
+			userMapper.update(user);
 		}
 	}
 	//削除
 	public void delete(String username) {
-		loginMapper.delete(username);
+		userMapper.delete(username);
 	}
 }

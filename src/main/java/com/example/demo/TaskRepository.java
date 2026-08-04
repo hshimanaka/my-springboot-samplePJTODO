@@ -15,8 +15,8 @@ public class TaskRepository{
 	public List<Task> findByUsername(String username) {
 		return taskMapper.findByUsername(username);
 	}
-	public List<Task> findByUsernamePaged(String username, int page, int size) {
-		return taskMapper.findByUsernamePaged(username, page, size);
+	public List<Task> findByUsernamePaged(String username, int limit, int offset) {
+		return taskMapper.findByUsernamePaged(username, limit, offset);
 	}
 	//保存
 	public void save(Task task) {
