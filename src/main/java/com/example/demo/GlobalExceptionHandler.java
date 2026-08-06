@@ -31,7 +31,7 @@ public class GlobalExceptionHandler {
 	}
 	
 	@ExceptionHandler(NotLoggedInException.class)
-	public String handleNotLoggedId(NotLoggedInException e) {
+	public String handleNotLoggedIn(NotLoggedInException e) {
 		log.info("未ログインアクセス： {}", e.getMessage());
 		return "redirect:/login";
 	}

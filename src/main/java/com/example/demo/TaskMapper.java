@@ -8,7 +8,6 @@ import org.apache.ibatis.annotations.Param;
 
 @Mapper
 public interface TaskMapper {
-	List<Task> findByUsername(String username);
 		Optional<Task> findByIdAndUsername(@Param("id") Long id, @Param("username") String username);
 		void insert(Task task);
 		void update(Task task);

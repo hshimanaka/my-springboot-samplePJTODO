@@ -75,7 +75,7 @@ public class TaskForm {
 	}
 
 
-
+//新規作成用
 	public Task toEntity(String username) {
 		Task task = new Task();
 		task.setUsername(username);
@@ -84,5 +84,23 @@ public class TaskForm {
 		task.setStartDate(this.startDate);
 		task.setEndDate(endDate);
 		return task;
+	}
+	
+//更新用
+	public Task toEntityForUpdate(String username) {
+		Task task = toEntity(username);
+		task.setId(this.id);
+		return task;
+	}
+	
+	//編集画面の初期表示
+	public static TaskForm form(Task task) {
+		TaskForm form = new TaskForm();
+		form.setId(task.getId());
+		form.setTitle(task.getTitle());
+		form.setContent(task.getContent());
+		form.setStartDate(task.getStartDate());
+		form.setEndDate(task.getEndDate());
+		return form;
 	}
 }

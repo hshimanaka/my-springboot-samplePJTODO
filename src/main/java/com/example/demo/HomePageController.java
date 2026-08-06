@@ -1,17 +1,13 @@
 package com.example.demo;
-import java.time.LocalDate;
-import java.util.List;
-
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -64,13 +60,12 @@ public class HomePageController {
 		model.addAttribute("taskForm", new TaskForm());
 		return "newTasks";
 	}
-	
 	@GetMapping("/tasks")
-	public Model showTask(@RequestParam(name = "page", defaultValue = "0") int page,
+	public String showTasks(@RequestParam(name = "page", defaultValue = "0") int page,
 			@RequestParam(name = "size", defaultValue = "20") int size,
-			Model mv) {
-		mv.addAttribute("taskPage", taskService.findPage(getLoginUsername(), page, size));
-		return mv;
+			Model Model) {
+		Model.addAttribute("taskPage", taskService.findPage(getLoginUsername(), page, size));
+		return "tasks";
 	}
 	@PostMapping("/tasks")
 	public String createTask(@Validated @ModelAttribute TaskForm form, BindingResult result) {
@@ -84,23 +79,15 @@ public class HomePageController {
 
 	
 	@PostMapping("/tasks/{id}/delete")
-	public String delete(@RequestParam("id") Long id) {
-		String username = getLoginUsername();
-		taskService.delete(id, username);
+	public String delete(@PathVariable("id") Long id) {
+		taskService.delete(id, getLoginUsername());
 		return "redirect:/tasks";
 	}
 	
-	@GetMapping("/tasks/edit")
-	public String taskEdit(@RequestParam("id") Long id, Model mv) {
-	    String username = getLoginUsername();
-	    Task targetTask = taskService.findByIdAndUsername(id, username);
-	    TaskForm form = new TaskForm();
-	    form.setId(targetTask.getId());
-	    form.setTitle(targetTask.getTitle());
-	    form.setContent(targetTask.getContent());
-	    form.setStartDate(targetTask.getStartDate());
-	    form.setEndDate(targetTask.getEndDate());
-	    mv.addAttribute("taskForm", form);
+	@GetMapping("/tasks/{id}/edit")
+	public String taskEdit(@PathVariable("id") Long id, Model Model) {
+	    Task target = taskService.findByIdAndUsername(id, getLoginUsername());
+	    Model.addAttribute("taskForm", TaskForm.form(target));
 	   return "taskEdit";
 	}
 	
@@ -109,6 +96,7 @@ public class HomePageController {
 		if(result.hasErrors()) {
 			return "taskEdit";
 		}
+		taskService.update(form.toEntityForUpdate(getLoginUsername()));
 		return "redirect:/tasks";
 	}
 	

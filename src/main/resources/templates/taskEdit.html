@@ -106,7 +106,7 @@
     <h1>タスク編集</h1>
 
     <form th:action="@{/tasks/update}" th:Object="${taskForm}" method="POST">
-		<input type="hidden" name="${id}">
+		<input type="hidden" th:field="*{id}">
         <!-- タイトル -->
         <div class="form-group">
             <label for="title">タイトル</label>

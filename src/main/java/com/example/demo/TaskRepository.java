@@ -11,14 +11,11 @@ public class TaskRepository{
 	public TaskRepository(TaskMapper taskMapper) {
 		this.taskMapper = taskMapper;
 	}
-	//userIdでの検索
-	public List<Task> findByUsername(String username) {
-		return taskMapper.findByUsername(username);
-	}
+
 	public List<Task> findByUsernamePaged(String username, int limit, int offset) {
 		return taskMapper.findByUsernamePaged(username, limit, offset);
 	}
-	//保存
+	
 	public void save(Task task) {
 		if(task.getId() == null) {
 			taskMapper.insert(task);
@@ -26,11 +23,11 @@ public class TaskRepository{
 			taskMapper.update(task);
 		}
 	}
-	//userIdとIdで検索
+	
 	public Optional<Task> findByIdAndUsername(Long id, String username) {
 		return taskMapper.findByIdAndUsername(id, username);
 	}
-	//削除
+	
 	public void delete(Long id, String username) {
 		taskMapper.delete(id, username);
 	}

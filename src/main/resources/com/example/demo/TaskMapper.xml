@@ -12,9 +12,6 @@
         <result property="updatedAt" column="updated_at"/>
     </resultMap>
 
-    <select id="findByUsername" resultMap="taskMap">
-        SELECT * FROM tasks WHERE username = #{username} ORDER BY id
-    </select>
     
     <select id="findByIdAndUsername" resultMap="taskMap">
     	SELECT * FROM tasks WHERE id = #{id} AND username = #{username}

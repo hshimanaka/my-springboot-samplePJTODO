@@ -14,11 +14,6 @@ public class TaskService {
 	}
 	
 	@Transactional(readOnly = true)
-		public List<Task> findByUsername(String username) {
-			return taskRepository.findByUsername(username);
-		}
-	
-	@Transactional(readOnly = true)
 	public Task findByIdAndUsername(Long id, String username) {
 		return taskRepository.findByIdAndUsername(id,  username)
 				.orElseThrow(() -> new TaskNotFoundException(id));
@@ -42,13 +37,6 @@ public class TaskService {
 		taskRepository.findByIdAndUsername(id, username)
 				.orElseThrow(() -> new TaskNotFoundException(id));
 		taskRepository.delete(id, username);
-	}
-	
-	@Transactional(readOnly = true)
-	public List<Task> findByUsername(String username, int page, int size) {
-		int limit = Math.min(Math.max(size,  1), 100);
-		int offset = Math.max(page, 0) * limit;
-		return taskRepository.findByUsernamePaged(username, limit, offset);
 	}
 	
 	@Transactional(readOnly = true)

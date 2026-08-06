@@ -44,7 +44,7 @@
 		}
 	</style>
 	</head>
-	<divbody>
+	<body>
 		<div class="container">
 		<h1>タスク管理</h1>
 		<div class="logout">
@@ -78,10 +78,9 @@
 			<td th:text="${rec.createdAt}"></td>
 			<td th:text="${rec.updatedAt}"></td>
 			<td>
-				<a th:href="@{/tasks/edit(id=${rec.id})}" class="btn-edit">編集</a>
-				<form th:action="@{'/tasks/' + ${rec.id} + '/delete'}" method="POST" 
+				<a th:href="@{/tasks/{id}/edit(id=${rec.id})}" class="btn-edit">編集</a>
+				<form th:action="@{/tasks/{id}/delete(id=${rec.id})}" method="POST" 
 				onsubmit="return confirm('削除しますか？');" style="display: inline">
-					<input type="hidden" name="id" th:value="${rec.id}">
 					<button type="submit" class="btn-delete">削除</button>
 				</form>
 			</td>
@@ -106,7 +105,6 @@
 				
 				<a th:if="${taskPage.hasNext}"
 				th:href="@{/tasks(page=${taskPage.page + 1}, size=${taskPage.size})}">次へ</a>
-		</div>
 		</div>
 	</body>
 </html>
