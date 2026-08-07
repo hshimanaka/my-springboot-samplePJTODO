@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>タスク編集</title>
+    <title>タスク登録</title>
     <style>
         body {
             font-family: "Helvetica Neue", Arial, sans-serif;
@@ -111,14 +111,13 @@
         </div>
         <!-- 開始日 -->
         <div class="form-group">
-            <label for="Start_date">開始日</label>
+            <label for="startDate">開始日 (任意)</label>
             <input type="date" th:field="*{startDate}">
-			<span th:if="${#fields.hasErrors('startDate')}" th:errors="*{startDate}" style="color:red"></span>
         </div>
 
         <!-- 終了日 -->
         <div class="form-group">
-            <label for="End_date">終了日</label>
+            <label for="endDate">終了日</label>
             <input type="date" th:field="*{endDate}">
         </div>
 

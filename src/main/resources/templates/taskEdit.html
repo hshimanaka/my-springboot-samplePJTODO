@@ -105,7 +105,7 @@
 
     <h1>タスク編集</h1>
 
-    <form th:action="@{/tasks/update}" th:Object="${taskForm}" method="POST">
+    <form th:action="@{/tasks/update}" th:object="${taskForm}" method="POST">
 		<input type="hidden" th:field="*{id}">
         <!-- タイトル -->
         <div class="form-group">
@@ -123,17 +123,15 @@
 
         <!-- 開始日 -->
         <div class="form-group">
-            <label for="startDate">開始日</label>
-            <input type="date"th:field="*{startDate}">
-			<span th:errors="*{startDate}" style="color:red;"></span>
+            <label for="startDate">開始日 (任意)</label>
+            <input type="date" th:field="*{startDate}">
         </div>
 		
 
         <!-- 終了日 -->
         <div class="form-group">
             <label for="endDate">終了日</label>
-			<input type="date"th:field="*{endDate}">
-			<span th:errors="*{endDate}" style="color:red;"></span>
+			<input type="date" th:field="*{endDate}">
         </div>
 
         <!-- ボタンエリア -->
