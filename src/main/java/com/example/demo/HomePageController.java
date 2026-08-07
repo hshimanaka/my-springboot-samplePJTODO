@@ -63,8 +63,8 @@ public class HomePageController {
 	@GetMapping("/tasks")
 	public String showTasks(@RequestParam(name = "page", defaultValue = "0") int page,
 			@RequestParam(name = "size", defaultValue = "20") int size,
-			Model Model) {
-		Model.addAttribute("taskPage", taskService.findPage(getLoginUsername(), page, size));
+			Model model) {
+		model.addAttribute("taskPage", taskService.findPage(getLoginUsername(), page, size));
 		return "tasks";
 	}
 	@PostMapping("/tasks")
@@ -77,7 +77,6 @@ public class HomePageController {
 		return "redirect:/tasks";
 	}
 
-	
 	@PostMapping("/tasks/{id}/delete")
 	public String delete(@PathVariable("id") Long id) {
 		taskService.delete(id, getLoginUsername());
@@ -85,9 +84,9 @@ public class HomePageController {
 	}
 	
 	@GetMapping("/tasks/{id}/edit")
-	public String taskEdit(@PathVariable("id") Long id, Model Model) {
+	public String taskEdit(@PathVariable("id") Long id, Model model) {
 	    Task target = taskService.findByIdAndUsername(id, getLoginUsername());
-	    Model.addAttribute("taskForm", TaskForm.form(target));
+	    model.addAttribute("taskForm", TaskForm.form(target));
 	   return "taskEdit";
 	}
 	

@@ -10,6 +10,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
+	private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+	
 	@ExceptionHandler(TaskNotFoundException.class)
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	public ModelAndView handleTaskNotFound(TaskNotFoundException e) {
@@ -19,8 +21,6 @@ public class GlobalExceptionHandler {
 		return mv;
 	}
 	
-
-	private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 	@ExceptionHandler(Exception.class)
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	public ModelAndView handleUnexpected(Exception e) {
